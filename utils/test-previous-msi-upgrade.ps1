@@ -11,10 +11,11 @@ $ErrorActionPreference = 'Stop'
 
 # This fixture installs application-only MSIs in an ephemeral GitHub-hosted VM.
 # There is deliberately no local override. Never run it on a developer PC.
+$allowedRepositories = @('hbashton/DS4Windows', 'HRTMC/DS4Windows')
 if ($env:GITHUB_ACTIONS -cne 'true' -or
     $env:RUNNER_ENVIRONMENT -cne 'github-hosted' -or
     $env:RUNNER_OS -cne 'Windows' -or
-    $env:GITHUB_REPOSITORY -cne 'HRTMC/DS4Windows' -or
+    $env:GITHUB_REPOSITORY -cnotin $allowedRepositories -or
     $env:GITHUB_RUN_ID -notmatch '^\d+$' -or
     [string]::IsNullOrWhiteSpace($env:RUNNER_TEMP) -or
     [string]::IsNullOrWhiteSpace($env:GITHUB_WORKSPACE)) {
